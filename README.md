@@ -1,6 +1,6 @@
 # PristineMouseover
 
-Adds a clear indicator to item tooltips in Ostranauts to show when an item is **Pristine**.
+Ostranauts mouseover mod to identify Pristine items in-game with hover (P), or Pristine in the mega tooltip.
 
 ---
 
