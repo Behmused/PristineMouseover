@@ -9,8 +9,8 @@ Ostranauts mouseover mod that identifies Pristine items in-game by adding `(P)` 
 * Adds `(P)` to item mouseover tooltip if item is Pristine
 * Does not modify or depend on the mega tooltip
 * Works automatically when hovering over items
-* ![Pristine Mouseover Example](images/Screenshot_20260504_233436.png)
-* ![Pristine Mouseover Example](images/Screenshot_20260504_233453.png)
+* ![Pristine Mouseover Example](Screenshot_20260504_233436.png)
+* ![Pristine Mouseover Example](Screenshot_20260504_233453.png)
 
 ---
 
