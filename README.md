@@ -17,7 +17,7 @@ Ostranauts mouseover mod that identifies Pristine items in-game by adding `(P)` 
 
 ## Requirements
 
-* Ostranauts — Build 0.15.0.26 (64) public_test
+* Ostranauts — Build 0.15.0.25 or Build 0.15.0.26 (64) public_test
 * BepInEx
 
 ---
