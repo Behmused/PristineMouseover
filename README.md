@@ -17,8 +17,7 @@ Ostranauts mouseover mod that identifies Pristine items in-game by adding `(P)` 
 
 ## Requirements
 
-* Ostranauts — Build 0.15.0.25 or Build 0.15.0.26 (64) public_test
-* BepInEx
+* [BepInExPack_Ostranauts](https://new.thunderstore.io/c/ostranauts/p/BepInEx/BepInExPack_Ostranauts)
 
 ---
 
@@ -34,15 +33,10 @@ Ostranauts mouseover mod that identifies Pristine items in-game by adding `(P)` 
 
 ---
 
-## Files
-
-* `PristineMouseover.dll` → compiled plugin
-* `.cs` files → source code
-
----
-
 ## Compatibility
 
+* Build 0.15.0.25 Main
+* Updated for Build 0.15.0.29 (64) public_test
 * Works alongside **PristineMegaTooltip**
 * May conflict with other tooltip/UI mods
 
