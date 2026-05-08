@@ -35,7 +35,7 @@ Ostranauts mouseover mod that identifies Pristine items in-game by adding `(P)` 
 
 ## Compatibility
 
-* Updated for Build 0.15.0.29
+* Updated for Ostranauts Build 0.15.0.29
 * Works alongside **PristineMegaTooltip**
 * May conflict with other tooltip/UI mods
 
