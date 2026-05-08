@@ -1,13 +1,17 @@
 # PristineMouseover
 
-Ostranauts mouseover mod that identifies Pristine items in-game by adding `(P)` to the standard hover tooltip.
+Adds a green (P) marker to Pristine items when hovering over them in-world or in inventory.
 
----
+This update improves support for Ostranauts 0.15.0.29 (64), including stacked mouseover items and inventory tooltips. Multiple Pristine objects under the cursor can now be marked at the same time, such as floors, equipment, installed objects, and loose items.
 
-# Updates
+Highlights:
+- Adds (P) to Pristine in-world mouseovers
+- Adds (P) to Pristine inventory mouseovers
+- Supports multiple Pristine objects in the same mouseover stack
+- Keeps the marker out of MegaTooltip and chat/log messages
+- UI-only tooltip helper for easier Pristine item identification
 
-Currently being updated for build 0.15.0.29, v1.0.0 works but there is an error and it leaks (P) into the chat.
-While not ideal, I've removed the broken release until it can be fixed. You may use 1.0.0 but beware of bugs.
+Tested on Ostranauts 0.15.0.29 (64).
 
 ---
 
@@ -42,7 +46,6 @@ While not ideal, I've removed the broken release until it can be fixed. You may 
 
 ## Compatibility
 
-* ~~Updated for Ostranauts Build 0.15.0.29~~
 * Works alongside **PristineMegaTooltip**
 * May conflict with other tooltip/UI mods
 
