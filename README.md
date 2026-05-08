@@ -43,7 +43,7 @@ Ostranauts mouseover mod that identifies Pristine items in-game by adding `(P)` 
 
 ## Related Mod
 
-**PristineMegaTooltip**
+**[Pristine MegaTooltip](https://github.com/Behmused/PristineMegaTooltip)**
 
 * Removes clutter from the mega tooltip
 * Displays condition labels (Pristine, Refurbished, Like New, Worn, Used)
