@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <OutputType>Library</OutputType>
+    <AssemblyName>PristineMouseover</AssemblyName>
+    <RootNamespace>PristineMouseover</RootNamespace>
+
+    <OutputPath>./</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="BepInEx">
+      <HintPath>/mnt/storage/nvme1/SteamLibrary/steamapps/common/Ostranauts/BepInEx/core/BepInEx.dll</HintPath>
+    </Reference>
+
+    <Reference Include="0Harmony">
+      <HintPath>/mnt/storage/nvme1/SteamLibrary/steamapps/common/Ostranauts/BepInEx/core/0Harmony.dll</HintPath>
+    </Reference>
+
+    <Reference Include="Assembly-CSharp">
+      <HintPath>/mnt/storage/nvme1/SteamLibrary/steamapps/common/Ostranauts/Ostranauts_Data/Managed/Assembly-CSharp.dll</HintPath>
+    </Reference>
+
+    <Reference Include="UnityEngine">
+      <HintPath>/mnt/storage/nvme1/SteamLibrary/steamapps/common/Ostranauts/Ostranauts_Data/Managed/UnityEngine.dll</HintPath>
+    </Reference>
+
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>/mnt/storage/nvme1/SteamLibrary/steamapps/common/Ostranauts/Ostranauts_Data/Managed/UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+
+    <Reference Include="netstandard">
+      <HintPath>/mnt/storage/nvme1/SteamLibrary/steamapps/common/Ostranauts/Ostranauts_Data/Managed/netstandard.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
