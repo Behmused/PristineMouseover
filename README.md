@@ -42,7 +42,7 @@ While not ideal, I've removed the broken release until it can be fixed. You may 
 
 ## Compatibility
 
-* Updated for Ostranauts Build 0.15.0.29
+* ~~Updated for Ostranauts Build 0.15.0.29~~
 * Works alongside **PristineMegaTooltip**
 * May conflict with other tooltip/UI mods
 
