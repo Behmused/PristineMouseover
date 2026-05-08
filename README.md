@@ -4,6 +4,13 @@ Ostranauts mouseover mod that identifies Pristine items in-game by adding `(P)` 
 
 ---
 
+# Updates
+
+Currently being updated for build 0.15.0.29, v1.0.0 works but there is an error and it leaks (P) into the chat.
+While not ideal, I've removed the broken release until it can be fixed. You may use 1.0.0 but beware of bugs.
+
+---
+
 ## Features
 
 * Adds `(P)` to item mouseover tooltip if item is Pristine
