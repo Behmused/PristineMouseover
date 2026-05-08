@@ -1,82 +1,126 @@
 using BepInEx;
 using HarmonyLib;
-using System;
+using System.Collections.Generic;
+using System.Reflection;
 
-[BepInPlugin("bemused.ostranauts.pristinemouseover", "Pristine Mouseover", "1.1.1")]
+[BepInPlugin("bemused.ostranauts.pristinemouseover", "Pristine Mouseover", "1.1.0")]
 public class PristineMouseoverPlugin : BaseUnityPlugin
 {
     private void Awake()
     {
+        LoggerStatic.Log = Logger;
+
         new Harmony("bemused.ostranauts.pristinemouseover").PatchAll();
-        Logger.LogInfo("Pristine Mouseover 1.1.1 loaded.");
+        Logger.LogInfo("Pristine Mouseover loaded.");
     }
 }
 
-internal static class PristineMouseoverUtil
+public static class LoggerStatic
 {
-    private const string MarkerPlain = " (P)";
-    private const string MarkerColor = " <color=#00ff00>(P)</color>";
+    public static BepInEx.Logging.ManualLogSource Log;
 
-    public static bool ShouldMark(CondOwner co)
+    public static void LogInfo(string msg)
     {
-        if (co == null) return false;
-        if (!co.HasCond("IsPristine")) return false;
-        if (string.IsNullOrWhiteSpace(co.strNameFriendly)) return false;
-        if (co.strNameFriendly.StartsWith("Floor:")) return false;
-        if (co.strNameFriendly == "Compartment") return false;
-
-        return true;
+        if (Log != null) Log.LogInfo(msg);
     }
+}
 
-    public static void AddMarkerToTooltipText(CondOwner co, ref string text)
+[HarmonyPatch(typeof(CrewSim), "FindCOsAtMousePosition")]
+public static class Patch_CrewSim_FindCOsAtMousePosition
+{
+    private static readonly Dictionary<CondOwner, Dictionary<string, string>> OriginalNames =
+    new Dictionary<CondOwner, Dictionary<string, string>>();
+
+    private static readonly string[] NameFields =
     {
-        if (!ShouldMark(co)) return;
-        if (string.IsNullOrWhiteSpace(text)) return;
-        if (text.Contains("(P)")) return;
+        "strNameFriendly",
+        "strName",
+        "strNameShort"
+    };
 
-        string name = co.FriendlyName;
-        if (string.IsNullOrWhiteSpace(name))
-            name = co.strNameFriendly;
-        if (string.IsNullOrWhiteSpace(name))
-            name = co.strName;
+    private static void Postfix(List<CondOwner> __result)
+    {
+        RestoreOriginalNames();
 
-        if (!string.IsNullOrWhiteSpace(name) && text.Contains(name))
+        if (__result == null || __result.Count == 0) return;
+
+        for (int i = 0; i < __result.Count; i++)
         {
-            text = text.Replace(name, name + MarkerColor);
+            CondOwner co = __result[i];
+            if (co == null) continue;
+            if (string.IsNullOrWhiteSpace(co.strNameFriendly)) continue;
+            if (co.strNameFriendly.StartsWith("Floor:")) continue;
+            if (co.strNameFriendly == "Compartment") continue;
+            if (!co.HasCond("IsPristine")) continue;
+
+            ApplyPristineMarkerPublic(co);
             return;
         }
+    }
 
-        string[] lines = text.Split(new[] { '\n' }, StringSplitOptions.None);
-        if (lines.Length == 0) return;
+    private static void RestoreOriginalNames()
+    {
+        foreach (var coEntry in OriginalNames)
+        {
+            CondOwner co = coEntry.Key;
+            if (co == null) continue;
 
-        lines[0] = lines[0] + MarkerPlain;
-        text = string.Join("\n", lines);
+            foreach (var fieldEntry in coEntry.Value)
+            {
+                FieldInfo field = GetStringField(fieldEntry.Key);
+                if (field == null) continue;
+
+                field.SetValue(co, fieldEntry.Value);
+            }
+        }
+
+        OriginalNames.Clear();
+    }
+
+    public static void ApplyPristineMarkerPublic(CondOwner co)
+    {
+        foreach (string fieldName in NameFields)
+        {
+            FieldInfo field = GetStringField(fieldName);
+            if (field == null) continue;
+
+            string value = field.GetValue(co) as string;
+            if (string.IsNullOrWhiteSpace(value)) continue;
+            if (value.Contains("(P)")) continue;
+
+            StoreOriginal(co, fieldName, value);
+            field.SetValue(co, value + " <color=#00ff00>(P)</color>");
+        }
+    }
+
+    private static void StoreOriginal(CondOwner co, string fieldName, string value)
+    {
+        if (!OriginalNames.ContainsKey(co))
+            OriginalNames[co] = new Dictionary<string, string>();
+
+        if (!OriginalNames[co].ContainsKey(fieldName))
+            OriginalNames[co][fieldName] = value;
+    }
+
+    private static FieldInfo GetStringField(string fieldName)
+    {
+        return typeof(CondOwner).GetField(
+            fieldName,
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+        );
     }
 }
 
-[HarmonyPatch(typeof(GUITooltip), "TooltipTextFormat1")]
-public static class Patch_GUITooltip_TooltipTextFormat1
+[HarmonyPatch(typeof(GUITooltip))]
+[HarmonyPatch("SetTooltip")]
+[HarmonyPatch(new System.Type[] { typeof(CondOwner), typeof(GUITooltip.TooltipWindow) })]
+public static class Patch_GUITooltip_SetTooltip_Inventory
 {
-    private static void Postfix(CondOwner condOwner, ref string __result)
+    private static void Prefix(CondOwner co, GUITooltip.TooltipWindow window)
     {
-        PristineMouseoverUtil.AddMarkerToTooltipText(condOwner, ref __result);
-    }
-}
+        if (co == null) return;
+        if (!co.HasCond("IsPristine")) return;
 
-[HarmonyPatch(typeof(GUITooltip), "TooltipTextFormat2")]
-public static class Patch_GUITooltip_TooltipTextFormat2
-{
-    private static void Postfix(CondOwner condOwner, ref string __result)
-    {
-        PristineMouseoverUtil.AddMarkerToTooltipText(condOwner, ref __result);
-    }
-}
-
-[HarmonyPatch(typeof(GUITooltip), "TooltipTextFormat3")]
-public static class Patch_GUITooltip_TooltipTextFormat3
-{
-    private static void Postfix(CondOwner co, Task2 task, ref string __result)
-    {
-        PristineMouseoverUtil.AddMarkerToTooltipText(co, ref __result);
+        Patch_CrewSim_FindCOsAtMousePosition.ApplyPristineMarkerPublic(co);
     }
 }
