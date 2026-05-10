@@ -11,7 +11,7 @@ Highlights:
 - Keeps the marker out of MegaTooltip and chat/log messages
 - UI-only tooltip helper for easier Pristine item identification
 
-Tested on Ostranauts 0.15.0.29 (64).
+Tested on Ostranauts 0.15.0.30 (64).
 
 ---
 
