@@ -6,9 +6,15 @@ obj/
 *.pdb
 *.dll
 
-# Keep source/project files tracked
-!*.cs
-!*.csproj
+# Logs
+*.log
+
+# Visual Studio folder
+.vs/
 
 # Local backup files
 backups/
+
+# Keep source/project files tracked
+!*.cs
+!*.csproj

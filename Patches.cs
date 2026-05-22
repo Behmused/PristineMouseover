@@ -48,6 +48,12 @@ public static class Patch_GUITooltip_SetTooltipMulti
     {
         __state = false;
 
+        if (PristineMouseoverCore.IsBlockedContext())
+        {
+            PristineMouseoverCore.RestoreOriginalNames();
+            return;
+        }
+
         if (aCOs == null || aCOs.Count == 0) return;
 
         for (int i = 0; i < aCOs.Count; i++)
@@ -81,6 +87,12 @@ public static class Patch_GUITooltip_SetTooltip_CondOwner
     {
         __state = false;
 
+        if (PristineMouseoverCore.IsBlockedContext())
+        {
+            PristineMouseoverCore.RestoreOriginalNames();
+            return;
+        }
+
         if (!PristineMouseoverCore.IsEligiblePristine(co)) return;
 
         __state = PristineMouseoverCore.ApplyPristineMarker(co);
@@ -97,6 +109,22 @@ public static class Patch_GUITooltip_SetTooltip_CondOwner
             return;
 
         PristineMouseoverCore.RestoreOriginalNames();
+    }
+}
+
+//────────────────────────────────────
+// Interaction/task tooltip support
+// Intentionally does not restore names here. Task/action UI can refresh while world mouseover is active;
+// restoring in this path caused visible (P) flicker during task/chat updates in testing.
+//────────────────────────────────────
+[HarmonyPatch(typeof(GUITooltip))]
+[HarmonyPatch("SetTooltipIA")]
+[HarmonyPatch(new Type[] { typeof(Interaction), typeof(GUITooltip.TooltipWindow) })]
+public static class Patch_GUITooltip_SetTooltipIA
+{
+    private static void Prefix(Interaction ia, GUITooltip.TooltipWindow window)
+    {
+        // No operation by design.
     }
 }
 
