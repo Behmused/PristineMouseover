@@ -12,7 +12,7 @@ Highlights:
 - Keeps the marker out of MegaTooltip and chat/log messages
 - Lightweight UI-only helper for faster Pristine item identification
 
-Tested/Working on Ostranauts 0.15.0.33 (64).
+Tested/Working on Ostranauts 0.15.0.36 (64).
 
 ---
 
