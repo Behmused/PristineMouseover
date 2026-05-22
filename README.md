@@ -17,9 +17,9 @@ Tested/Working on Ostranauts 0.15.0.33 (64).
 
 ## Features
 
-* ![Pristine Mouseover Example](images/Screenshot_20260504_233453.png)
-* ![Pristine Mouseover Example](images/Screenshot_20260504_233436.png)
-* ![Pristine Mouseover Example](images/Screenshot_20260504_233411.png)
+![Pristine Mouseover Example](images/Screenshot_20260504_233453.png)<br>&nbsp;<br>
+![Pristine Mouseover Example](images/Screenshot_20260504_233436.png)<br>&nbsp;<br>
+![Pristine Mouseover Example](images/Screenshot_20260504_233411.png)<br>&nbsp;<br>
 
 ---
 
