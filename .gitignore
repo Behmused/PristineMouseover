@@ -1,0 +1,14 @@
+# Build output
+bin/
+obj/
+
+# Debug symbols and local DLL copies
+*.pdb
+*.dll
+
+# Keep source/project files tracked
+!*.cs
+!*.csproj
+
+# Local backup files
+backups/

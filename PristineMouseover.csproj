@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <OutputType>Library</OutputType>
+    <AssemblyName>PristineMouseover</AssemblyName>
+    <RootNamespace>PristineMouseover</RootNamespace>
+    <Version>1.2.0</Version>
+
+    <GameDir>/mnt/storage/nvme1/SteamLibrary/steamapps/common/Ostranauts</GameDir>
+    <ManagedDir>$(GameDir)/Ostranauts_Data/Managed</ManagedDir>
+    <BepInExDir>$(GameDir)/BepInEx/core</BepInExDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="BepInEx">
+      <Private>false</Private>
+      <HintPath>$(BepInExDir)/BepInEx.dll</HintPath>
+    </Reference>
+
+    <Reference Include="0Harmony">
+      <Private>false</Private>
+      <HintPath>$(BepInExDir)/0Harmony.dll</HintPath>
+    </Reference>
+
+    <Reference Include="Assembly-CSharp">
+      <Private>false</Private>
+      <HintPath>$(ManagedDir)/Assembly-CSharp.dll</HintPath>
+    </Reference>
+
+    <Reference Include="UnityEngine">
+      <Private>false</Private>
+      <HintPath>$(ManagedDir)/UnityEngine.dll</HintPath>
+    </Reference>
+
+    <Reference Include="UnityEngine.CoreModule">
+      <Private>false</Private>
+      <HintPath>$(ManagedDir)/UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+
+    <Reference Include="UnityEngine.UI">
+      <Private>false</Private>
+      <HintPath>$(ManagedDir)/UnityEngine.UI.dll</HintPath>
+    </Reference>
+
+    <Reference Include="Unity.TextMeshPro">
+      <Private>false</Private>
+      <HintPath>$(ManagedDir)/Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+
+    <Reference Include="netstandard">
+      <Private>false</Private>
+      <HintPath>$(ManagedDir)/netstandard.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
