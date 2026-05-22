@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 
-[BepInPlugin("bemused.ostranauts.pristinemouseover", "Pristine Mouseover", "1.2.0")]
+[BepInPlugin("bemused.ostranauts.pristinemouseover", "Pristine Mouseover", "1.3.0")]
 public class PristineMouseoverPlugin : BaseUnityPlugin
 {
     private void Awake()
@@ -13,7 +13,7 @@ public class PristineMouseoverPlugin : BaseUnityPlugin
         LoggerStatic.Log = Logger;
 
         new Harmony("bemused.ostranauts.pristinemouseover").PatchAll();
-        Logger.LogInfo("Pristine Mouseover 1.2.0 loaded.");
+        Logger.LogInfo("Pristine Mouseover 1.3.0 loaded.");
     }
 }
 

@@ -6,10 +6,11 @@ This update improves support for Ostranauts 0.15.0.29 (64), including stacked mo
 
 Highlights:
 - Adds (P) to Pristine in-world mouseovers
-- Adds (P) to Pristine inventory mouseovers
+- Adds (P) to Pristine inventory tooltips
+- Adds (P) to the right-click quick-bar/context title for Pristine items
 - Supports multiple Pristine objects in the same mouseover stack
 - Keeps the marker out of MegaTooltip and chat/log messages
-- UI-only tooltip helper for easier Pristine item identification
+- Lightweight UI-only helper for faster Pristine item identification
 
 Tested/Working on Ostranauts 0.15.0.33 (64).
 

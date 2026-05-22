@@ -6,7 +6,7 @@
     <OutputType>Library</OutputType>
     <AssemblyName>PristineMouseover</AssemblyName>
     <RootNamespace>PristineMouseover</RootNamespace>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
 
     <GameDir>/mnt/storage/nvme1/SteamLibrary/steamapps/common/Ostranauts</GameDir>
     <ManagedDir>$(GameDir)/Ostranauts_Data/Managed</ManagedDir>
