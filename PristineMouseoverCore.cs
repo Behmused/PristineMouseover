@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
 
 //────────────────────────────────────
@@ -100,18 +99,6 @@ public static class PristineMouseoverCore
         return value + Marker;
     }
 
-    // Used by generic tooltip patches to avoid feeding temporary name mutations into chat/log or MegaTooltip paths.
-    public static bool IsBlockedContext()
-    {
-        string stack = StackSummary();
-
-        return stack.IndexOf("MegaToolTip", StringComparison.OrdinalIgnoreCase) >= 0 ||
-               stack.IndexOf("MegaTooltip", StringComparison.OrdinalIgnoreCase) >= 0 ||
-               stack.IndexOf("Chat", StringComparison.OrdinalIgnoreCase) >= 0 ||
-               stack.IndexOf("MessageLog", StringComparison.OrdinalIgnoreCase) >= 0 ||
-               stack.IndexOf("LogEntry", StringComparison.OrdinalIgnoreCase) >= 0;
-    }
-
     public static string StripPristineMarker(string value)
     {
         if (string.IsNullOrEmpty(value)) return value;
@@ -119,7 +106,6 @@ public static class PristineMouseoverCore
         string cleaned = value.Replace(Marker, "");
         cleaned = cleaned.Replace(" <color=#00ff00>(P)</color>", "");
         cleaned = cleaned.Replace("<color=#00ff00>(P)</color>", "");
-        cleaned = cleaned.Replace("(P)", "");
         return cleaned.TrimEnd();
     }
 
@@ -169,32 +155,5 @@ public static class PristineMouseoverCore
             fieldName,
             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
         );
-    }
-
-    private static string StackSummary()
-    {
-        try
-        {
-            StackTrace trace = new StackTrace(2, false);
-            StackFrame[] frames = trace.GetFrames();
-            if (frames == null || frames.Length == 0) return string.Empty;
-
-            List<string> names = new List<string>();
-            int max = Math.Min(frames.Length, 8);
-            for (int i = 0; i < max; i++)
-            {
-                MethodBase method = frames[i].GetMethod();
-                if (method == null) continue;
-
-                string typeName = method.DeclaringType != null ? method.DeclaringType.FullName : string.Empty;
-                names.Add(typeName + "." + method.Name);
-            }
-
-            return string.Join(" | ", names.ToArray());
-        }
-        catch
-        {
-            return string.Empty;
-        }
     }
 }
