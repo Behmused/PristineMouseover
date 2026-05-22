@@ -1,9 +1,5 @@
 # PristineMouseover
 
-Adds a green (P) marker to Pristine items when hovering over them in-world or in inventory.
-
-This update improves support for Ostranauts 0.15.0.29 (64), including stacked mouseover items and inventory tooltips. Multiple Pristine objects under the cursor can now be marked at the same time, such as floors, equipment, installed objects, and loose items.
-
 Highlights:
 - Adds (P) to Pristine in-world mouseovers
 - Adds (P) to Pristine inventory tooltips
