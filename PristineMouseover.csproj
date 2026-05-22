@@ -7,6 +7,7 @@
     <AssemblyName>PristineMouseover</AssemblyName>
     <RootNamespace>PristineMouseover</RootNamespace>
     <Version>1.3.0</Version>
+    <NuGetAudit>false</NuGetAudit>
 
     <GameDir>/mnt/storage/nvme1/SteamLibrary/steamapps/common/Ostranauts</GameDir>
     <ManagedDir>$(GameDir)/Ostranauts_Data/Managed</ManagedDir>
