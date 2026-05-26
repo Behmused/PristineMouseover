@@ -82,3 +82,25 @@ public static class Patch_GUIQuickBar_set_COTarget
         txtTitle.text = PristineMouseoverCore.GetPristineMarkedName(txtTitle.text);
     }
 }
+
+//────────────────────────────────────
+// World hover detail-card support
+// GUIItemList.Update routes hovered items through GUIItemToolTip.SetCondOwner in display-card mode.
+// Mark the rendered item name at the card write site without changing shared CondOwner fields.
+//────────────────────────────────────
+[HarmonyPatch(typeof(GUIItemToolTip), "SetCondOwner")]
+public static class Patch_GUIItemToolTip_SetCondOwner
+{
+    private static readonly FieldInfo NameTextField = AccessTools.Field(typeof(GUIItemToolTip), "m_txtName");
+
+    private static void Postfix(GUIItemToolTip __instance, CondOwner co)
+    {
+        if (__instance == null) return;
+        if (!PristineMouseoverCore.IsEligiblePristine(co)) return;
+
+        TMP_Text nameText = NameTextField?.GetValue(__instance) as TMP_Text;
+        if (nameText == null) return;
+
+        nameText.text = PristineMouseoverCore.GetPristineMarkedName(nameText.text);
+    }
+}
