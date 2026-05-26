@@ -1,24 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
-//────────────────────────────────────
-// Core marker state and helpers
-// Temporarily appends the pristine marker to CondOwner name fields during tooltip rendering,
-// then restores the original strings before other UI systems can persist them.
-//────────────────────────────────────
 public static class PristineMouseoverCore
 {
     public const string Marker = " <color=#00ff00>(P)</color>";
 
-    private static readonly FieldInfo StrNameFriendlyField = GetStringField("strNameFriendly");
-    private static readonly FieldInfo StrNameField = GetStringField("strName");
-    private static readonly FieldInfo StrNameShortField = GetStringField("strNameShort");
-
-    private static readonly Dictionary<CondOwner, Dictionary<string, string>> OriginalNames =
-        new Dictionary<CondOwner, Dictionary<string, string>>();
-
-    private static bool _inventoryTooltipPendingRestore;
+    private const string DamagedSprite = "<sprite=\"FontSprites\" index=16>";
+    private const string SelectedSuffix = "]</color>";
 
     public static bool IsEligiblePristine(CondOwner co)
     {
@@ -44,54 +32,6 @@ public static class PristineMouseoverCore
         }
     }
 
-    public static bool ApplyPristineMarker(CondOwner co)
-    {
-        if (co == null) return false;
-
-        bool changedAny = false;
-        changedAny |= TryApplyPristineMarker(co, "strNameFriendly", StrNameFriendlyField);
-        changedAny |= TryApplyPristineMarker(co, "strName", StrNameField);
-        changedAny |= TryApplyPristineMarker(co, "strNameShort", StrNameShortField);
-
-        return changedAny;
-    }
-
-    public static void RestoreOriginalNames()
-    {
-        foreach (var coEntry in OriginalNames)
-        {
-            CondOwner co = coEntry.Key;
-            if (co == null) continue;
-
-            foreach (var fieldEntry in coEntry.Value)
-            {
-                FieldInfo field = GetCachedNameField(fieldEntry.Key);
-                if (field == null) continue;
-
-                field.SetValue(co, fieldEntry.Value);
-            }
-        }
-
-        OriginalNames.Clear();
-    }
-
-    public static void MarkInventoryTooltipPendingRestore()
-    {
-        _inventoryTooltipPendingRestore = true;
-    }
-
-    public static bool ConsumeInventoryTooltipPendingRestore()
-    {
-        bool pending = _inventoryTooltipPendingRestore;
-        _inventoryTooltipPendingRestore = false;
-        return pending;
-    }
-
-    public static bool IsInventoryWindow(GUITooltip.TooltipWindow window)
-    {
-        return string.Equals(window.ToString(), "Inventory", StringComparison.OrdinalIgnoreCase);
-    }
-
     public static string GetPristineMarkedName(string value)
     {
         if (string.IsNullOrWhiteSpace(value)) return value;
@@ -99,61 +39,50 @@ public static class PristineMouseoverCore
         return value + Marker;
     }
 
-    public static string StripPristineMarker(string value)
+    public static string AddMarkerToFirstLine(string value)
     {
-        if (string.IsNullOrEmpty(value)) return value;
+        if (string.IsNullOrWhiteSpace(value)) return value;
+        if (value.Contains("(P)")) return value;
 
-        string cleaned = value.Replace(Marker, "");
-        cleaned = cleaned.Replace(" <color=#00ff00>(P)</color>", "");
-        cleaned = cleaned.Replace("<color=#00ff00>(P)</color>", "");
-        return cleaned.TrimEnd();
+        int newlineIndex = value.IndexOf('\n');
+        if (newlineIndex < 0) return value + Marker;
+
+        return value.Insert(newlineIndex, Marker);
     }
 
-    private static void StoreOriginal(CondOwner co, string fieldName, string value)
+    public static string AddMarkersToWorldHoverList(string value, IList<CondOwner> cos)
     {
-        if (!OriginalNames.ContainsKey(co))
-            OriginalNames[co] = new Dictionary<string, string>();
+        if (string.IsNullOrWhiteSpace(value) || cos == null || cos.Count == 0) return value;
 
-        if (!OriginalNames[co].ContainsKey(fieldName))
-            OriginalNames[co][fieldName] = value;
-    }
+        string[] lines = value.Split('\n');
+        int coIndex = 0;
 
-    private static bool TryApplyPristineMarker(CondOwner co, string fieldName, FieldInfo field)
-    {
-        if (field == null)
+        for (int i = 0; i < lines.Length && coIndex < cos.Count; i++)
         {
-            LoggerStatic.Warn("Pristine Mouseover: missing CondOwner field: " + fieldName);
-            return false;
+            if (string.IsNullOrEmpty(lines[i])) continue;
+
+            if (IsEligiblePristine(cos[coIndex]))
+                lines[i] = AddMarkerToWorldHoverLine(lines[i]);
+
+            coIndex++;
         }
 
-        string value = field.GetValue(co) as string;
-        if (string.IsNullOrWhiteSpace(value)) return false;
-        if (value.Contains("(P)")) return false;
-
-        StoreOriginal(co, fieldName, value);
-        field.SetValue(co, value + Marker);
-        return true;
+        return string.Join("\n", lines);
     }
 
-    private static FieldInfo GetCachedNameField(string fieldName)
+    private static string AddMarkerToWorldHoverLine(string value)
     {
-        if (string.Equals(fieldName, "strNameFriendly", StringComparison.Ordinal))
-            return StrNameFriendlyField;
+        if (string.IsNullOrWhiteSpace(value)) return value;
+        if (value.Contains("(P)")) return value;
 
-        if (string.Equals(fieldName, "strName", StringComparison.Ordinal))
-            return StrNameField;
+        int damagedIndex = value.IndexOf(DamagedSprite, StringComparison.Ordinal);
+        if (damagedIndex >= 0)
+            return value.Insert(damagedIndex, Marker);
 
-        if (string.Equals(fieldName, "strNameShort", StringComparison.Ordinal))
-            return StrNameShortField;
+        int selectedIndex = value.IndexOf(SelectedSuffix, StringComparison.Ordinal);
+        if (selectedIndex >= 0)
+            return value.Insert(selectedIndex, Marker);
 
-        return null;
-    }
-
-    private static FieldInfo GetStringField(string fieldName)
-    {
-        return typeof(CondOwner).GetField(
-            fieldName,
-            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-        );
+        return value + Marker;
     }
 }
