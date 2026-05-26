@@ -1,9 +1,10 @@
 # PristineMouseover
 
 Highlights:
-- Adds (P) to Pristine in-world mouseovers
-- Adds (P) to Pristine inventory tooltips
-- Adds (P) to the right-click quick-bar/context title for Pristine items
+- Adds (P) to in-world mouseovers
+- Adds (P) to inventory tooltips
+- Adds (P) to the Damage PDA item view
+- Adds (P) to the right-click quick-bar/context title
 - Supports multiple Pristine objects in the same mouseover stack
 - Keeps the marker out of MegaTooltip and chat/log messages
 - Lightweight UI-only helper for faster Pristine item identification
